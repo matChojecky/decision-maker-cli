@@ -1,27 +1,28 @@
-import { sleep } from "./helpers";
 import { createLiveUpdateLogger } from "./printer";
 
 const compareOdds = (actual: number, passingOdd: number) =>
   actual * 100 > 100 - passingOdd;
 
+const createOdd = () => Math.random() + 0.001; //using geometric mean to calculate momentary values we cannot have 0s;
+
 export function shouldI(odds: number, runningTime: number): Promise<boolean> {
   const liveUpdater = createLiveUpdateLogger();
   return new Promise(async (res) => {
-    let _stop = false;
-    let currentOddsValue = Math.random();
+    let currentOddsValue = createOdd();
     setTimeout(() => {
-      _stop = true;
+      clearInterval(outputInterval);
+      clearInterval(updateInterval);
       liveUpdater.finish();
       res(compareOdds(currentOddsValue, odds));
     }, runningTime);
-    while (true) {
-      if (_stop) {
-        break;
-      }
-      currentOddsValue = (currentOddsValue + Math.random()) / 2;
-      liveUpdater.log(compareOdds(currentOddsValue, odds));
-      await sleep(100);
+
+    const outputInterval = setInterval(() => {
       liveUpdater.clear();
-    }
+      liveUpdater.log(compareOdds(currentOddsValue, odds));
+    }, 200);
+
+    const updateInterval = setInterval(() => {
+      currentOddsValue = Math.sqrt(currentOddsValue * createOdd());
+    }, 25);
   });
 }

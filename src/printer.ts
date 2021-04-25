@@ -33,7 +33,15 @@ export function createLiveUpdateLogger() {
   const success = ["Yes", chalk.green] as const;
   const fail = ["No", chalk.red] as const;
   const logger = loggerFactory((text: string) => {
-    process.stdout.write(`Making decision...Posible outcome: ${text}`);
+    const dotsAmount = Math.round(Math.random() * 5);
+    const createChars = (char: string, amount: number) =>
+      Array(amount).fill(char).join("");
+    process.stdout.write(
+      `Making decision. Posible outcome${createChars(
+        ".",
+        dotsAmount
+      )}${createChars(" ", 6 - dotsAmount)} ${text}\t`
+    );
   });
   return {
     log(isCurrentChanceSuccessful: boolean): void {
