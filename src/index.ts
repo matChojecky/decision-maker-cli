@@ -4,7 +4,7 @@ import figlet from "figlet";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { shouldI } from "./decision-maker";
-import { createLiveUpdateLogger, displayResult } from "./printer";
+import { displayResult } from "./printer";
 
 const argv = yargs(hideBin(process.argv)).options({
   chance: {
@@ -28,7 +28,7 @@ const argv = yargs(hideBin(process.argv)).options({
 clear();
 console.log(
   chalk.whiteBright(
-    figlet.textSync("Should I realy?", {
+    figlet.textSync("Should I?", {
       horizontalLayout: "universal smushing",
     })
   )

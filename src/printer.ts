@@ -37,7 +37,7 @@ export function createLiveUpdateLogger() {
     const createChars = (char: string, amount: number) =>
       Array(amount).fill(char).join("");
     process.stdout.write(
-      `Making decision. Posible outcome${createChars(
+      `Making decision. Possible outcome${createChars(
         ".",
         dotsAmount
       )}${createChars(" ", 6 - dotsAmount)} ${text}\t`
